@@ -12,7 +12,7 @@ FPS = 240
 
 WIDTH, HEIGHT = 1000, 600
 
-ROWS =  COLS = 50
+ROWS =  COLS = 50 #cols is row / 2 
 
 TOOLBAR_HEIGHT = HEIGHT - WIDTH
 
@@ -22,6 +22,7 @@ BG_COLOR = WHITE
 
 DRAW_GRID_LINES = True
 
+FILL_BUTTON = False
 
 def get_font(size):
     return pygame.font.SysFont("comicsans", size)

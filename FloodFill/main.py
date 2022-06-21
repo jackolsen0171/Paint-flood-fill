@@ -34,8 +34,14 @@ def draw_grid(win, grid):
 
 def fillSquare(pos):
     x,y = pos
-    row,col = x//20, y//20 - 5
+    row = x//PIXEL_SIZE
+    col = (y//PIXEL_SIZE) - (ROWS//10)
     grid[col][row] = BLACK
+
+def checkFillPress(pos):
+    x,y = pos
+    if (x > fillButton.x) and (x < fillButton.x + fillButton.width) and (y > fillButton.y) and (y < fillButton.y + fillButton.height):
+        print('hi')
 
 
 def draw(win, grid):
@@ -44,15 +50,13 @@ def draw(win, grid):
     fillButton.show(win)
     pygame.display.update()
 
-def test():
-    pass
 
 
 run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
-fillButton = Button(20,20,WHITE,40,40)
+fillButton = Button(110,20,WHITE,40,40,'Fill: ', True)
 
 
 
@@ -66,9 +70,14 @@ while run:
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
             fillSquare(pos)
+            if checkFillPress(pos):
+                pass
 
             
 
     draw(WIN, grid)
+
+
+
 
 pygame.quit()
