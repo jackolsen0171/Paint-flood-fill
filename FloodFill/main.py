@@ -37,13 +37,15 @@ def fillSquare(pos):
     row,col = x//20, y//20 - 5
     grid[col][row] = BLACK
 
-def draw(win, grid,button):
+
+def draw(win, grid):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
     fillButton.show(win)
     pygame.display.update()
 
-
+def test():
+    pass
 
 
 run = True
@@ -67,6 +69,6 @@ while run:
 
             
 
-    draw(WIN, grid, fillButton)
-print(grid[0][0])
+    draw(WIN, grid)
+
 pygame.quit()
