@@ -1,8 +1,9 @@
+from cv2 import floodFill
 from utils import *
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PAINT v2.1")
-
+fill_mode = False
 
 def init_grid(rows, cols, color):
     grid = []
@@ -18,8 +19,7 @@ def init_grid(rows, cols, color):
 def draw_grid(win, grid):
     for i, row in enumerate(grid):
         for j, colour in enumerate(row):
-            pygame.draw.rect(win,colour, ((j * PIXEL_SIZE), (i * 
-            PIXEL_SIZE) + 100, PIXEL_SIZE, PIXEL_SIZE))
+            pygame.draw.rect(win,colour, ((j * PIXEL_SIZE), (i * PIXEL_SIZE) + 100, PIXEL_SIZE, PIXEL_SIZE))
             
 
     if DRAW_GRID_LINES:
@@ -29,49 +29,75 @@ def draw_grid(win, grid):
 
         for i in range(COLS + 1):
             pygame.draw.line(win, BLACK, (i * PIXEL_SIZE, 100),
-                             (i * PIXEL_SIZE, HEIGHT - TOOLBAR_HEIGHT))
+                             (i * PIXEL_SIZE, HEIGHT))
 
-
-def fillSquare(pos):
+def getRowCol(pos):
     x,y = pos
-    row = x//PIXEL_SIZE
-    col = (y//PIXEL_SIZE) - (ROWS//10)
-    grid[col][row] = BLACK
+    row = (y//PIXEL_SIZE) - (ROWS//10)
+    col = x//PIXEL_SIZE
+    return row,col
 
-def checkFillPress(pos):
+# def fillSquare(pos):
+#     x,y = pos
+#     row = (y//PIXEL_SIZE) - (ROWS//10)
+#     col = x//PIXEL_SIZE
+#     grid[row][col] = BLACK
+
+def clickedOnFill(pos):
     x,y = pos
     if (x > fillButton.x) and (x < fillButton.x + fillButton.width) and (y > fillButton.y) and (y < fillButton.y + fillButton.height):
-        print('hi')
-
+        return True
+                
+def floodFill(pos):
+    x,y = pos
+    row = (y//PIXEL_SIZE) - (ROWS//10)
+    col = x//PIXEL_SIZE
+    
 
 def draw(win, grid):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
     fillButton.show(win)
+    fillButton.showClicked(WIN)
     pygame.display.update()
-
 
 
 run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
-fillButton = Button(110,20,WHITE,40,40,'Fill: ', True)
+fillButton = Button(110,20,WHITE,60,40,'Fill: ', 'Off', BLACK)
 
 
 
 while run:
     clock.tick(FPS)
-
+    
     for event in pygame.event.get():
+        
         if event.type == pygame.QUIT:
             run = False
 
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
-            fillSquare(pos)
-            if checkFillPress(pos):
-                pass
+            row,col = getRowCol(pos)
+            grid[row][col] = BLACK
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            
+            if clickedOnFill(pos) and fill_mode == False:
+                fill_mode = True
+                fillButton.checkboxColour = BLACK
+                fillButton.checkboxText = 'On'
+            
+            elif clickedOnFill(pos) and fill_mode == True:
+                fill_mode = False
+                fillButton.checkboxColour = BLACK
+                fillButton.checkboxText = 'Off'
+        
+        if fill_mode == True:
+            pass
+            
 
             
 

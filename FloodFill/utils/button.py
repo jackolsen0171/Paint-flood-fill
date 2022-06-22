@@ -1,14 +1,15 @@
 from .settings import *
 
 class Button:
-    def __init__(self,x,y,colour, width,height, text, checkBox):
+    def __init__(self,x,y,colour, width,height, text, checkboxText, checkboxColour):
         self.x = x
         self.y = y
         self.colour = colour
         self.width = width
         self.height = height
         self.text = text
-        self.checkBox = checkBox
+        self.checkboxColour = checkboxColour
+        self.checkboxText = checkboxText
         self.font = get_font(60)
 
     def show(self,win):
@@ -19,5 +20,7 @@ class Button:
         txt = self.font.render(self.text, True, BLACK)
         win.blit(txt, (25,20))
         
-        
-
+    def showClicked(self,win):
+        font = get_font(50)
+        txt = font.render(self.checkboxText, True, self.checkboxColour)
+        win.blit(txt, (115,25))
