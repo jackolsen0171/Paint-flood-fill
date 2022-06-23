@@ -1,4 +1,3 @@
-from cv2 import floodFill
 from utils import *
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
