@@ -47,10 +47,18 @@ def clickedOnFill(pos):
     if (x > fillButton.x) and (x < fillButton.x + fillButton.width) and (y > fillButton.y) and (y < fillButton.y + fillButton.height):
         return True
                 
-def floodFill(pos):
-    x,y = pos
-    row = (y//PIXEL_SIZE) - (ROWS//10)
-    col = x//PIXEL_SIZE
+def floodFill(x,y, start_colour, new_colour):
+    if grid[x][y] != start_colour:
+        return
+    else:
+        grid[x][y] = new_colour
+        neighbours = [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
+        for n in neighbours:
+            if 0 <= n[0] <= width-1 and 0 <= n[1] <= height-1:
+                floodFill(n[0], n[1], WHITE, RED)
+    
+    
+    
     
 
 def draw(win, grid):
@@ -65,7 +73,7 @@ run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
-fillButton = Button(110,20,WHITE,60,40,'Fill: ', 'Off', BLACK)
+fillButton = Button(110,20,WHITE,60,45,'Fill: ', 'Off', BLACK)
 
 
 
@@ -77,11 +85,12 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-        if pygame.mouse.get_pressed()[0]:
+        if pygame.mouse.get_pressed()[0]: 
             pos = pygame.mouse.get_pos()
             row,col = getRowCol(pos)
-            grid[row][col] = BLACK
-        
+            if fill_mode == False:   
+                grid[row][col] = BLACK
+            
         if event.type == pygame.MOUSEBUTTONDOWN:
             
             if clickedOnFill(pos) and fill_mode == False:
@@ -95,7 +104,10 @@ while run:
                 fillButton.checkboxText = 'Off'
         
         if fill_mode == True:
-            pass
+            width = len(grid)
+            height = len(grid[0])
+            pos = getRowCol(pos)
+            floodFill(pos[0], pos[1], WHITE, RED)
             
 
             
