@@ -50,13 +50,13 @@ def clickedOnFill(pos):
                 
 def floodFill(x,y, start_colour, new_colour):
     if grid[x][y] != start_colour:
-        return
+        return None
     else:
         grid[x][y] = new_colour
         neighbours = [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
         for n in neighbours:
             if 0 <= n[0] <= width-1 and 0 <= n[1] <= height-1:
-                floodFill(n[0], n[1], WHITE, RED)
+                floodFill(n[0], n[1], BG_COLOR, FILL_COLOUR)
     
     
     
@@ -90,7 +90,7 @@ while run:
             pos = pygame.mouse.get_pos()
             row,col = getRowCol(pos)
             if fill_mode == False:   
-                grid[row][col] = BLACK
+                grid[row][col] = drawing_color
             
         if event.type == pygame.MOUSEBUTTONDOWN:
             
@@ -108,8 +108,8 @@ while run:
             width = len(grid)
             height = len(grid[0])
             pos = getRowCol(pos)
-            floodFill(pos[0], pos[1], WHITE, RED)
-            
+            floodFill(pos[0], pos[1], BG_COLOR, FILL_COLOUR)
+
 
             
 

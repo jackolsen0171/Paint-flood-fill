@@ -20,5 +20,9 @@ BG_COLOR = WHITE
 
 DRAW_GRID_LINES = True
 
+DRAWING_COLOUR = BLACK
+
+FILL_COLOUR = RED
+
 def get_font(size):
     return pygame.font.SysFont("comicsans", size)
