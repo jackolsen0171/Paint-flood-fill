@@ -13,14 +13,14 @@ class Button:
         self.font = get_font(60)
 
     def show(self,win):
-        pygame.draw.rect(win, self.colour, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(win, self.colour, (self.x + 10, self.y + 25, self.width, self.height))
         
-        pygame.draw.rect(win, BLACK, (self.x, self.y, self.width, self.height), 3)
+        pygame.draw.rect(win, WHITE, (self.x + 10, self.y + 25, self.width, self.height), 3)
         
         txt = self.font.render(self.text, True, BLACK)
-        win.blit(txt, (25,20))
+        win.blit(txt, (self.x - 100,self.y))
         
     def showClicked(self,win):
-        font = get_font(50)
+        font = get_font(30)
         txt = font.render(self.checkboxText, True, self.checkboxColour)
-        win.blit(txt, (115,25))
+        win.blit(txt, (self.x + 13,self.y + 28))
