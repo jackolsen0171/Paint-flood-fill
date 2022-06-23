@@ -1,5 +1,5 @@
 from utils import *
-#x
+
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PAINT v2.1")
