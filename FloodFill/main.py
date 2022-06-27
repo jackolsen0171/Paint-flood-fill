@@ -62,11 +62,19 @@ def floodFill(x,y, start_colour, new_colour):
     
     
 
-def draw(win, grid):
+def draw(win, grid,buttons):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
-    fillButton.show(win)
+    # for index,button in enumerate(buttons):
+    #     if index == 0:
+    #         button[index].show(WIN)
+    #         button[index].showClicked(WIN)
+    #     else:
+    #         button[index].show(WIN)
+    fillButton.show(WIN)
     fillButton.showClicked(WIN)
+    # for button in buttons:
+    #     button.show(WIN)
     pygame.display.update()
 
 
@@ -74,9 +82,16 @@ run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
-fillButton = Button(110,20,WHITE,60,45,'Fill: ', 'Off', BLACK)
-
-
+# fillButton = Button(110,20,WHITE,60,45,'Fill: ', 'Off', BLACK)
+fillButton = Button(110,20,50,50,BLACK,'Fill', 'Off',WHITE)
+buttons = [
+    Button(90,10,50,50,BLACK),
+    Button(150,10,50,50,RED),
+    Button(210,10,50,50,GREEN),
+    Button(270,10,50,50,BLUE),
+    Button(430,10,50,50,WHITE, 'Erase', BLACK),
+    Button(490,10,50,50,WHITE, 'Clear',BLACK)
+]
 
 while run:
     clock.tick(FPS)
@@ -96,13 +111,13 @@ while run:
             
             if clickedOnFill(pos) and fill_mode == False:
                 fill_mode = True
-                fillButton.checkboxColour = BLACK
-                fillButton.checkboxText = 'On'
+                fillButton.text_colour = BLACK
+                fillButton.text2 = 'On'
             
             elif clickedOnFill(pos) and fill_mode == True:
                 fill_mode = False
-                fillButton.checkboxColour = BLACK
-                fillButton.checkboxText = 'Off'
+                fillButton.text_colour = BLACK
+                fillButton.text2 = 'Off'
         
         if fill_mode == True:
             width = len(grid)
@@ -113,7 +128,7 @@ while run:
 
             
 
-    draw(WIN, grid)
+    draw(WIN, grid,buttons)
 
 
 

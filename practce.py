@@ -1,12 +1,15 @@
-rows = cols = 5
+class Car:
+    def __init__(self,colour):
+        self.colour = colour
 
-grid = []
-for i in range(rows):
-    grid.append([])
-    for _ in range(cols):
-        grid[i].append('0')
+    def show(self):
+        print(self.colour)
+cars = [
+    Car('red'),
+    Car('blue'),
+    Car('green'),
+    Car('black')
+]
 
-
-for i, row in enumerate(grid):
-    for j, val in enumerate(grid):
-        print(j,val)
+for index,car in enumerate(cars):
+    print(cars[car].show())
