@@ -1,7 +1,8 @@
+from webbrowser import get
 from .settings import *
 
 class Button:
-    def __init__(self,x,y, width,height,colour, text=None,text2=None,text_colour=None,name=None):
+    def __init__(self,x,y, width,height,colour, text=None,text2=None, font=None):
         self.x = x
         self.y = y
         self.width = width
@@ -9,21 +10,25 @@ class Button:
         self.colour = colour
         self.text = text
         self.text2 = text2
-        self.text_colour = text_colour
+        self.font = font
 
     def show(self,win):
-        font = get_font(30)
-        pygame.draw.rect(win, self.colour, (self.x + 10, self.y + 25, self.width, self.height))
+        pygame.draw.rect(win,self.colour, (self.x, self.y, self.width, self.height))
         
-        pygame.draw.rect(win, WHITE, (self.x + 10, self.y + 25, self.width, self.height), 3)
+        # pygame.draw.rect(win, self.colour, (self.x + 60, self.y, self.width, self.height), 3)
+        if self.font != None:
+            font = get_font(self.font)
         
-        txt = font.render(self.text,1, True, self.text_colour)
-        if self.text2 != None:
-            txt2 = font.render(self.text2,1, True, self.text_colour)
-            win.blit(txt2, (self.x - 100, self.y))
-        win.blit(txt, (self.x - 100,self.y))
+            txt = font.render(self.text,True, BLACK)
+            if self.text2 != '':
+                txt2 = font.render(self.text2,True, BLACK)
+                win.blit(txt2,(self.x + 150, self.y))
+
+            win.blit(txt, (self.x,self.y))
+
         
-    def showClicked(self,win):#fill button only
-        font = get_font(30)
-        txt = font.render(self.text ,1,True, self.text_colour)
-        win.blit(txt, (self.x + 13,self.y + 28))
+    # def onSwitch(self,win):#fill button only
+
+    #     txt2 = self.font.render(self.text2, True, BLACK)
+
+    #     win.blit(txt2, (self.x + 70 , self.y))

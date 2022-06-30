@@ -19,16 +19,16 @@ def init_grid(rows, cols, color):
 def draw_grid(win, grid):
     for i, row in enumerate(grid):
         for j, colour in enumerate(row):
-            pygame.draw.rect(win,colour, ((j * PIXEL_SIZE), (i * PIXEL_SIZE) + 100, PIXEL_SIZE, PIXEL_SIZE))
+            pygame.draw.rect(win,colour, ((j * PIXEL_SIZE), (i * PIXEL_SIZE) + 140, PIXEL_SIZE, PIXEL_SIZE))
             
 
     if DRAW_GRID_LINES:
         for i in range(ROWS + 1):
-            pygame.draw.line(win, BLACK, (0,(i * PIXEL_SIZE) + 100),
-                             (WIDTH, (i * PIXEL_SIZE) + 100))
+            pygame.draw.line(win, BLACK, (0,(i * PIXEL_SIZE) + 140),
+                             (WIDTH, (i * PIXEL_SIZE) + 140))
 
         for i in range(COLS + 1):
-            pygame.draw.line(win, BLACK, (i * PIXEL_SIZE, 100),
+            pygame.draw.line(win, BLACK, (i * PIXEL_SIZE, 140),
                              (i * PIXEL_SIZE, HEIGHT))
 
 def getRowCol(pos):
@@ -43,10 +43,10 @@ def getRowCol(pos):
 #     col = x//PIXEL_SIZE
 #     grid[row][col] = BLACK
 
-def clickedOnFill(pos):
-    x,y = pos
-    if (x > fillButton.x) and (x < fillButton.x + fillButton.width) and (y > fillButton.y) and (y < fillButton.y + fillButton.height):
-        return True
+# def clickedOnButton(pos):
+#     x,y = pos
+#     if (x > fillButton.x) and (x < fillButton.x + fillButton.width) and (y > fillButton.y) and (y < fillButton.y + fillButton.height):
+#         return True
                 
 def floodFill(x,y, start_colour, new_colour):
     if grid[x][y] != start_colour:
@@ -62,19 +62,15 @@ def floodFill(x,y, start_colour, new_colour):
     
     
 
-def draw(win, grid,buttons):
+def draw(win, grid):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
-    # for index,button in enumerate(buttons):
-    #     if index == 0:
-    #         button[index].show(WIN)
-    #         button[index].showClicked(WIN)
-    #     else:
-    #         button[index].show(WIN)
+    statusBar.show(WIN)
+    # if fill_mode == True:  
+    #     fillButton.onSwitch(WIN)
+    for button in buttons:
+        button.show(WIN)
     fillButton.show(WIN)
-    fillButton.showClicked(WIN)
-    # for button in buttons:
-    #     button.show(WIN)
     pygame.display.update()
 
 
@@ -82,16 +78,18 @@ run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
-# fillButton = Button(110,20,WHITE,60,45,'Fill: ', 'Off', BLACK)
-fillButton = Button(110,20,50,50,BLACK,'Fill', 'Off',WHITE)
+fillButton = Button(900,90,50,30,WHITE,'fill','', 30)
+statusBar = Button(400,5,50,50,WHITE,'status:','',50)
 buttons = [
-    Button(90,10,50,50,BLACK),
-    Button(150,10,50,50,RED),
-    Button(210,10,50,50,GREEN),
-    Button(270,10,50,50,BLUE),
-    Button(430,10,50,50,WHITE, 'Erase', BLACK),
-    Button(490,10,50,50,WHITE, 'Clear',BLACK)
+    Button(900,0,50,30,WHITE, 'erase','',30),
+    Button(900,45,50,30,WHITE, 'clear', '', 30),
+    Button(10,10,50,50,BLACK),
+    Button(70,10,50,50,RED),
+    Button(10,70,50,50,GREEN),
+    Button(70,70,50,50,BLUE),
+
 ]
+
 
 while run:
     clock.tick(FPS)
@@ -101,34 +99,43 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
+
         if pygame.mouse.get_pressed()[0]: 
-            pos = pygame.mouse.get_pos()
-            row,col = getRowCol(pos)
-            if fill_mode == False:   
-                grid[row][col] = drawing_color
+            for index,button in enumerate(buttons):
+                pass
+                
+
+
             
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        # if event.type == pygame.MOUSEBUTTONDOWN:
+        #     # if clickedOnFill(pos) and fill_mode == False:
+        #     if clickedOnFill(pos):
+        #         fill_mode = True
+
+        #         fillButton.text_colour = BLACK
+        #         statusBar.text2 = 'Fill'
             
-            if clickedOnFill(pos) and fill_mode == False:
-                fill_mode = True
-                fillButton.text_colour = BLACK
-                fillButton.text2 = 'On'
-            
-            elif clickedOnFill(pos) and fill_mode == True:
-                fill_mode = False
-                fillButton.text_colour = BLACK
-                fillButton.text2 = 'Off'
+        #     elif clickedOnFill(pos) and fill_mode == True:
+        #         fill_mode = False
+        #         fillButton.text_colour = BLACK
+        #         statusBar.text2 = ''
+
+        #     for index,button in enumerate(buttons):
+        #         if clickedOnFill(pos):
+        #             print(index)
+        # for index, button in buttons:
+        #     if event.type == pygame.MOUSEBUTTONDOWN:
+        #         if clickedOnButton(pos):
         
-        if fill_mode == True:
-            width = len(grid)
-            height = len(grid[0])
-            pos = getRowCol(pos)
-            floodFill(pos[0], pos[1], BG_COLOR, FILL_COLOUR)
+        # if fill_mode == True:
+        #     width = len(grid)
+        #     height = len(grid[0])
+        #     pos = getRowCol(pos)
+        #     floodFill(pos[0], pos[1], BG_COLOR, FILL_COLOUR)
 
 
             
-
-    draw(WIN, grid,buttons)
+    draw(WIN, grid)
 
 
 
