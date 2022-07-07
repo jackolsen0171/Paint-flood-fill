@@ -33,21 +33,15 @@ def draw_grid(win, grid):
 
 def getRowCol(pos):
     x,y = pos
-    row = (y//PIXEL_SIZE) - (ROWS//10)
+    row = (y//PIXEL_SIZE) - (ROWS//10) - 2
     col = x//PIXEL_SIZE
     return row,col
 
-# def fillSquare(pos):
-#     x,y = pos
-#     row = (y//PIXEL_SIZE) - (ROWS//10)
-#     col = x//PIXEL_SIZE
-#     grid[row][col] = BLACK
+def clickedOnButton(pos,button):
+    x,y = pos
+    if (x > button.x) and (x < button.x + button.width) and (y > button.y) and (y < button.y + button.height):
+        return True
 
-# def clickedOnButton(pos):
-#     x,y = pos
-#     if (x > fillButton.x) and (x < fillButton.x + fillButton.width) and (y > fillButton.y) and (y < fillButton.y + fillButton.height):
-#         return True
-                
 def floodFill(x,y, start_colour, new_colour):
     if grid[x][y] != start_colour:
         return None
@@ -55,8 +49,8 @@ def floodFill(x,y, start_colour, new_colour):
         grid[x][y] = new_colour
         neighbours = [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
         for n in neighbours:
-            if 0 <= n[0] <= width-1 and 0 <= n[1] <= height-1:
-                floodFill(n[0], n[1], BG_COLOR, FILL_COLOUR)
+            if 0 <= n[0] <= WIDTH-1 and 0 <= n[1] <= HEIGHT-1:
+                floodFill(n[0], n[1], BG_COLOR, fill_colour)
     
     
     
@@ -66,8 +60,6 @@ def draw(win, grid):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
     statusBar.show(WIN)
-    # if fill_mode == True:  
-    #     fillButton.onSwitch(WIN)
     for button in buttons:
         button.show(WIN)
     fillButton.show(WIN)
@@ -83,56 +75,47 @@ statusBar = Button(400,5,50,50,WHITE,'status:','',50)
 buttons = [
     Button(900,0,50,30,WHITE, 'erase','',30),
     Button(900,45,50,30,WHITE, 'clear', '', 30),
-    Button(10,10,50,50,BLACK),
-    Button(70,10,50,50,RED),
-    Button(10,70,50,50,GREEN),
-    Button(70,70,50,50,BLUE),
+    Button(10,10,50,50,BLACK,'Black'),
+    Button(70,10,50,50,RED,'Red'),
+    Button(10,70,50,50,GREEN,'Green'),
+    Button(70,70,50,50,BLUE,'Blue'),
 
 ]
 
 
 while run:
     clock.tick(FPS)
-    
+    pos = pygame.mouse.get_pos()
     for event in pygame.event.get():
         
         if event.type == pygame.QUIT:
             run = False
 
 
-        if pygame.mouse.get_pressed()[0]: 
+        if pygame.mouse.get_pressed()[0] and not fill_mode:
+            row,col = getRowCol(pos)
+            grid[row][col] = drawing_colour
+            
             for index,button in enumerate(buttons):
-                pass
-                
-
-
+                if clickedOnButton(pos,buttons[index]):
+                    statusBar.text2 = buttons[index].text
+                    drawing_colour = buttons[index].colour
+                    if buttons[index].text == 'clear':
+                        for i,colour in enumerate(grid):
+                            for j,colour in enumerate(grid):
+                                grid[i][j] = WHITE
             
-        # if event.type == pygame.MOUSEBUTTONDOWN:
-        #     # if clickedOnFill(pos) and fill_mode == False:
-        #     if clickedOnFill(pos):
-        #         fill_mode = True
-
-        #         fillButton.text_colour = BLACK
-        #         statusBar.text2 = 'Fill'
             
-        #     elif clickedOnFill(pos) and fill_mode == True:
-        #         fill_mode = False
-        #         fillButton.text_colour = BLACK
-        #         statusBar.text2 = ''
-
-        #     for index,button in enumerate(buttons):
-        #         if clickedOnFill(pos):
-        #             print(index)
-        # for index, button in buttons:
-        #     if event.type == pygame.MOUSEBUTTONDOWN:
-        #         if clickedOnButton(pos):
+            if clickedOnButton(pos, fillButton) and (fill_mode == False):
+                    fill_mode = True
+                    statusBar.text2 = 'fill' 
         
-        # if fill_mode == True:
-        #     width = len(grid)
-        #     height = len(grid[0])
-        #     pos = getRowCol(pos)
-        #     floodFill(pos[0], pos[1], BG_COLOR, FILL_COLOUR)
-
+        if fill_mode == True:
+            x,y = getRowCol(pos)
+            if pygame.mouse.get_pressed()[0] and (x >= 0) and (y >= 0):
+                floodFill(x,y,BG_COLOR, fill_colour)
+                fill_mode = False
+                statusBar.text2 = ''         
 
             
     draw(WIN, grid)

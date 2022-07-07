@@ -22,7 +22,9 @@ DRAW_GRID_LINES = True
 
 drawing_colour = BLACK
 
-FILL_COLOUR = RED
+fill_colour = RED
+
+fill_mode = False
 
 def get_font(size):
     return pygame.font.SysFont("comicsans", size)
