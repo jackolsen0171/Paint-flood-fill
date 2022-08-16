@@ -1,13 +1,11 @@
 from utils import *
-
-
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PAINT v2.1")
 fill_mode = False
+GREY = (51,51,51)
 
 def init_grid(rows, cols, color):
     grid = []
-
     for i in range(rows):
         grid.append([])
         for _ in range(cols):
@@ -31,9 +29,11 @@ def draw_grid(win, grid):
             pygame.draw.line(win, BLACK, (i * PIXEL_SIZE, 140),
                              (i * PIXEL_SIZE, HEIGHT))
 
+
 def getRowCol(pos):
     x,y = pos
-    row = (y//PIXEL_SIZE) - (ROWS//10) - 2
+    y = y - 140 #top 140 pixels are not part of the grid
+    row = y//PIXEL_SIZE
     col = x//PIXEL_SIZE
     return row,col
 
@@ -100,6 +100,8 @@ while run:
                 if clickedOnButton(pos,buttons[index]):
                     statusBar.text2 = buttons[index].text
                     drawing_colour = buttons[index].colour
+                    fill_colour = buttons[index].colour
+                    
                     if buttons[index].text == 'clear':
                         for i,colour in enumerate(grid):
                             for j,colour in enumerate(grid):
@@ -124,3 +126,4 @@ while run:
 
 
 pygame.quit()
+
