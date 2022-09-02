@@ -17,3 +17,4 @@ width and height can be resized = settings. buttons scale with size, I hope...
 Enjoy!
 
 <img width="1004" alt="Screenshot 2022-08-16 at 19 20 46" src="https://user-images.githubusercontent.com/86835540/184951847-993ac540-912d-46b4-ac90-ca99b2ae05d0.png">
+<img width="381" alt="Screenshot 2022-09-02 165623" src="https://user-images.githubusercontent.com/86835540/188192835-fef27428-c5ab-4ba1-8bc3-c8c683666c75.png">
