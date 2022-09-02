@@ -12,7 +12,7 @@ FPS = 240
 
 WIDTH, HEIGHT = 1000, 600
 
-ROWS =  COLS = 50 #cols is row / 2 
+ROWS =  COLS = 20 #cols is row / 2 
 
 PIXEL_SIZE = WIDTH // COLS
 
@@ -20,11 +20,18 @@ BG_COLOR = WHITE
 
 DRAW_GRID_LINES = True
 
+OFFSET = 140
+
 drawing_colour = BLACK
 
 fill_colour = RED
 
 fill_mode = False
+
+def getTextSize(size,text):
+    font = pygame.font.SysFont("comicsans", size)
+    textSize = font.size(text)
+    return textSize    
 
 def get_font(size):
     return pygame.font.SysFont("comicsans", size)

@@ -1,3 +1,5 @@
+
+
 from utils import *
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PAINT v2.1")
@@ -17,22 +19,22 @@ def init_grid(rows, cols, color):
 def draw_grid(win, grid):
     for i, row in enumerate(grid):
         for j, colour in enumerate(row):
-            pygame.draw.rect(win,colour, ((j * PIXEL_SIZE), (i * PIXEL_SIZE) + 140, PIXEL_SIZE, PIXEL_SIZE))
+            pygame.draw.rect(win,colour, ((j * PIXEL_SIZE), (i * PIXEL_SIZE) + OFFSET, PIXEL_SIZE, PIXEL_SIZE))
             
 
     if DRAW_GRID_LINES:
         for i in range(ROWS + 1):
-            pygame.draw.line(win, BLACK, (0,(i * PIXEL_SIZE) + 140),
-                             (WIDTH, (i * PIXEL_SIZE) + 140))
+            pygame.draw.line(win, BLACK, (0,(i * PIXEL_SIZE) + OFFSET),
+                             (WIDTH, (i * PIXEL_SIZE) + OFFSET))
 
         for i in range(COLS + 1):
-            pygame.draw.line(win, BLACK, (i * PIXEL_SIZE, 140),
+            pygame.draw.line(win, BLACK, (i * PIXEL_SIZE, OFFSET),
                              (i * PIXEL_SIZE, HEIGHT))
 
 
 def getRowCol(pos):
     x,y = pos
-    y = y - 140 #top 140 pixels are not part of the grid
+    y = y - OFFSET
     row = y//PIXEL_SIZE
     col = x//PIXEL_SIZE
     return row,col
@@ -44,15 +46,16 @@ def clickedOnButton(pos,button):
 
 def floodFill(x,y, start_colour, new_colour):
     if grid[x][y] != start_colour:
+        print(grid[x][y])
         return None
     else:
         grid[x][y] = new_colour
         neighbours = [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
         for n in neighbours:
             if 0 <= n[0] <= WIDTH-1 and 0 <= n[1] <= HEIGHT-1:
-                floodFill(n[0], n[1], BG_COLOR, fill_colour)
+                floodFill(n[0], n[1], start_colour, fill_colour)
     
-    
+
     
     
 
@@ -70,11 +73,11 @@ run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
-fillButton = Button(900,90,50,30,WHITE,'fill','', 30)
-statusBar = Button(400,5,50,50,WHITE,'status:','',50)
+fillButton = Button(WIDTH - getTextSize(30,'fill')[0],90,50,30,WHITE,'fill','', 30)
+statusBar = Button(WIDTH/2,5,50,50,WHITE,'status:','',40)
 buttons = [
-    Button(900,0,50,30,WHITE, 'erase','',30),
-    Button(900,45,50,30,WHITE, 'clear', '', 30),
+    Button(WIDTH - getTextSize(30,'erase')[0],0,50,30,WHITE, 'erase','',30),
+    Button(WIDTH - getTextSize(30,'clear')[0],45,50,30,WHITE, 'clear', '', 30),
     Button(10,10,50,50,BLACK,'Black'),
     Button(70,10,50,50,RED,'Red'),
     Button(10,70,50,50,GREEN,'Green'),
@@ -94,7 +97,8 @@ while run:
 
         if pygame.mouse.get_pressed()[0] and not fill_mode:
             row,col = getRowCol(pos)
-            grid[row][col] = drawing_colour
+            if pos[1] >= OFFSET:
+                grid[row][col] = drawing_colour
             
             for index,button in enumerate(buttons):
                 if clickedOnButton(pos,buttons[index]):
@@ -115,12 +119,16 @@ while run:
         if fill_mode == True:
             x,y = getRowCol(pos)
             if pygame.mouse.get_pressed()[0] and (x >= 0) and (y >= 0):
-                floodFill(x,y,BG_COLOR, fill_colour)
+                floodFill(x,y,grid[x][y], fill_colour)
                 fill_mode = False
                 statusBar.text2 = ''         
 
             
     draw(WIN, grid)
+    # for i in buttons:
+    #     print(i.textSize)
+
+
 
 
 
