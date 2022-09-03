@@ -11,8 +11,8 @@ Fill:
 - click fill button
 - click on a square to fill the area
 
-pixel density can be changed in the settings at the ROW = COL = n
-width and height can be resized = settings. buttons scale with size, I hope...
+pixel density can be changed in the settings at the ROW = COL = n.
+Width and height can be resized in settings. Buttons scale with size, I hope...
 
 Enjoy!
 
